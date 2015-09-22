@@ -38,13 +38,13 @@ function geo_offset_menu() {
 function geo_offset_page() { ?>
 
 <div class="wrap">
-    <h2>Distance Not Set message setting.</h2>
+    <h2>Geo Offset Duplicate Listings.</h2>
     <hr />
     <table class="widefat" style="width:600px;">
 
 		<thead style="background:#2EA2CC;color:#fff;">
             <tr>
-                <th style="color:#fff;">Message Settings</th>
+                <th style="color:#fff;">Open this page to run this script.</th>
             </tr>
         </thead>
 			<tr>

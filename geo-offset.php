@@ -58,7 +58,7 @@ if($geo)
 		foreach ( $geo as $geoo ) 
 		{
 			$wpdb->query("UPDATE $wpdb->postmeta SET meta_value = meta_value+0.00001 WHERE meta_id = $geoo->meta_id");
-			echo "All Done... Check your listings";
+			echo "Checking....  Finished.<br />";
 		} 
 	} else { echo "No duplicate coordinates found...."; }
 

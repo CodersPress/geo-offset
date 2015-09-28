@@ -3,8 +3,8 @@
 Plugin Name: Geo Offset Duplicate Listings
 Plugin URI: http://coderspress.com/
 Description: Adds 0.00001 to Listing Longitude Coordinates
-Version: 2015.0922
-Updated: 22nd September 2015
+Version: 2015.0928
+Updated: 28nd September 2015
 Author: sMarty 
 Author URI: http://coderspress.com
 WP_Requires: 3.8.1
@@ -35,6 +35,23 @@ function geo_offset_menu() {
 	add_menu_page('GEO Offset', 'GEO Offset', 'administrator', __FILE__, 'geo_offset_page',plugins_url('/images/geo-icon.gif', __FILE__));
 }
 
+
+register_activation_hook( __FILE__, 'geo_offset_activation' );
+
+function geo_offset_activation() {
+	wp_schedule_event( time(), 'hourly', 'geo_offset_hourly_event_hook' );
+}
+
+add_action( 'geo_offset_hourly_event_hook', 'geo_offset_do_this_hourly' );
+
+register_deactivation_hook( __FILE__, 'geo_offset_deactivation' );
+
+function geo_offset_deactivation(){
+  wp_clear_scheduled_hook( 'geo_offset_hourly_event_hook' );
+}
+
+
+
 function geo_offset_page() { ?>
 
 <div class="wrap">
@@ -49,6 +66,7 @@ function geo_offset_page() { ?>
         </thead>
 			<tr>
 <td><?php 
+function geo_offset_do_this_hourly(){
 global $wpdb;
 
 $geo = $wpdb->get_results("SELECT meta_id, meta_value FROM $wpdb->postmeta WHERE meta_key = 'map-log' GROUP BY meta_value HAVING Count(meta_value) > 1");
@@ -58,10 +76,11 @@ if($geo)
 		foreach ( $geo as $geoo ) 
 		{
 			$wpdb->query("UPDATE $wpdb->postmeta SET meta_value = meta_value+0.00001 WHERE meta_id = $geoo->meta_id");
-			echo "Checking....  Finished.<br />";
+			echo "All Done... Check your listings";
 		} 
 	} else { echo "No duplicate coordinates found...."; }
-
+}
+geo_offset_do_this_hourly();
 ?></td>
 			</tr>
   </table>
